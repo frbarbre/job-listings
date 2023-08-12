@@ -8,11 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
+      colors: {
+        "dark-cyan": "hsl(180, 29%, 50%)",
+        "cyan-bg": "hsl(180, 52%, 96%)",
+        "cyan-filter": "hsl(180, 31%, 95%)",
+        "gray-cyan": "hsl(180, 8%, 52%)",
+        "dark-gray-cyan": "hsl(180, 14%, 20%)"
+      }
     },
   },
   plugins: [],

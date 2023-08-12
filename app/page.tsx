@@ -45,7 +45,7 @@ export default function Home() {
   }, [filters]);
   return (
     <main className="flex flex-col gap-10">
-      <h1 onClick={handleReste}>Reset</h1>
+      <h1 onClick={handleReset}>Reset</h1>
       <div className="flex gap-5">
         {filters.map((filter) => (
           <h2 onClick={() => handleRemove(filter)} className="text-green-500">

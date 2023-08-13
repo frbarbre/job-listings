@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { data } from "@/data";
-import { nanoid } from "nanoid";
 import Job from "@/components/Job";
+import { nanoid } from "nanoid";
+import Filters from "@/components/Filters";
 
 export default function Home() {
   const [filters, setFilters] = useState<string[]>([]);
 
   function handleAdd(filter: string) {
     const isFilterActive = filters.find((data) => data === filter);
-
     if (!isFilterActive) {
       setFilters([...filters, filter]);
     }
@@ -18,6 +18,10 @@ export default function Home() {
 
   function handleRemove(option: string) {
     setFilters(filters.filter((filter) => filter !== option));
+  }
+
+  function handleReset() {
+    setFilters([])
   }
 
   const filteredJobs = data.filter((job) =>
@@ -30,36 +34,31 @@ export default function Home() {
   );
 
   return (
-    <main className="flex flex-col gap-10">
-      <h1 onClick={() => setFilters([])}>Reset</h1>
+    <section className="flex flex-col gap-10">
       <div className="flex gap-5">
-        {filters.map((filter) => (
-          <h2
-            key={nanoid()}
-            onClick={() => handleRemove(filter)}
-            className="text-green-500"
-          >
-            {filter}
-          </h2>
-        ))}
+        <Filters filters={filters} handleRemove={handleRemove} handleReset={handleReset} />
       </div>
-      {filteredJobs.map((job) => {
-        const skills = [job.role, job.level, ...job.languages, ...job.tools];
-        return (
-          <Job
-            skills={skills}
-            company={job.company}
-            logo={job.logo}
-            isNew={job.new}
-            isFeatured={job.featured}
-            position={job.position}
-            postedAt={job.postedAt}
-            location={job.location}
-            handleAdd={handleAdd}
-            key={job.id}
-          />
-        );
-      })}
-    </main>
+      <section className="flex flex-col gap-[40px] md:gap-[24px] pb-[34px] pt-[56px] md:pb-[120px] md:pt-[40px]">
+        {filteredJobs.map((job, index) => {
+          const skills = [job.role, job.level, ...job.languages, ...job.tools];
+          return (
+            <Job
+              key={job.id}
+              skills={skills}
+              handleAdd={handleAdd}
+              company={job.company}
+              logo={job.logo}
+              isNew={job.new}
+              isFeatured={job.featured}
+              position={job.position}
+              postedAt={job.postedAt}
+              location={job.location}
+              contract={job.contract}
+              index={index}
+            />
+          );
+        })}
+      </section>
+    </section>
   );
 }

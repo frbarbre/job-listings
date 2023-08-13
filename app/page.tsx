@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { jobListings } from "@/data";
-import { JobType } from "@/types";
-import { filterList } from "@/utils/filterList";
+import { useState } from "react";
+import { data } from "@/data";
+import { nanoid } from "nanoid";
 
 export default function Home() {
-  const [filteredJobs, setFilteredJobs] = useState(jobListings);
   const [filters, setFilters] = useState<string[]>([]);
 
   function handleAdd(filter: string) {
@@ -21,55 +19,39 @@ export default function Home() {
     setFilters(filters.filter((filter) => filter !== option));
   }
 
-  function handleReset() {
-    setFilters([]);
-  }
+  const filteredJobs = data.filter((job) =>
+    filters.every(
+      (catagory) =>
+        Object.values(job).includes(catagory) ||
+        Object.values(job.tools).includes(catagory) ||
+        Object.values(job.languages).includes(catagory)
+    )
+  );
 
-  useEffect(() => {
-    const arr: string[][] = jobListings.map((job) => [
-      job.role,
-      job.level,
-      ...job.languages,
-      ...job.tools,
-    ]);
-
-    const newData = arr.reduce((acc: JobType[], arr, index) => {
-      if (filterList(arr, filters)) {
-        acc.push(jobListings[index]);
-      }
-      return acc;
-    }, []);
-
-    setFilteredJobs(newData);
-    console.log("Ran");
-  }, [filters]);
   return (
     <main className="flex flex-col gap-10">
-      <h1 onClick={handleReset}>Reset</h1>
+      <h1 onClick={() => setFilters([])}>Reset</h1>
       <div className="flex gap-5">
         {filters.map((filter) => (
-          <h2 onClick={() => handleRemove(filter)} className="text-green-500">
+          <h2 key={nanoid()} onClick={() => handleRemove(filter)} className="text-green-500">
             {filter}
           </h2>
         ))}
       </div>
-      {filteredJobs.map((job) => (
-        <div className="flex items-center gap-10">
-          <h2>{job.company}</h2>
-          <article className="flex gap-5">
-            <h3 onClick={() => handleAdd(job.role)}>{job.role}</h3>
-            <h3 onClick={() => handleAdd(job.level)}>{job.level}</h3>
+      {filteredJobs.map((job) => {
+        const skills = [job.role, job.level, ...job.languages, ...job.tools];
 
-            {job.languages.map((language) => (
-              <h3 onClick={() => handleAdd(language)}>{language}</h3>
-            ))}
-
-            {job.tools.map((tool) => (
-              <h3 onClick={() => handleAdd(tool)}>{tool}</h3>
-            ))}
-          </article>
-        </div>
-      ))}
+        return (
+          <div key={nanoid()} className="flex items-center gap-10">
+            <h2>{job.company}</h2>
+            <article className="flex gap-5">
+              {skills.map((skill) => (
+                <h3 key={nanoid()} onClick={() => handleAdd(skill)}>{skill}</h3>
+              ))}
+            </article>
+          </div>
+        );
+      })}
     </main>
   );
 }

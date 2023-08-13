@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { data } from "@/data";
 import Job from "@/components/Job";
-import { nanoid } from "nanoid";
 import Filters from "@/components/Filters";
 
 export default function Home() {
@@ -34,7 +33,7 @@ export default function Home() {
   );
 
   return (
-    <section className="flex flex-col gap-10">
+    <section className="flex flex-col">
       <div className="flex gap-5">
         <Filters filters={filters} handleRemove={handleRemove} handleReset={handleReset} />
       </div>

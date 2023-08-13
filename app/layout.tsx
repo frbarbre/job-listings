@@ -19,7 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={leagueSpartan.className}>{children}</body>
+      <body className={`${leagueSpartan.className} bg-cyan-bg`}>
+        <div className="bg-header-mobile h-[156px] w-full bg-no-repeat bg-cover md:bg-header-desktop bg-dark-cyan absolute" />
+        <main className="relative z-10 max-w-[1158px] mx-auto px-[24px]">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

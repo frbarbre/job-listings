@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { data } from "@/data";
 import { nanoid } from "nanoid";
+import Job from "@/components/Job";
 
 export default function Home() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -33,23 +34,30 @@ export default function Home() {
       <h1 onClick={() => setFilters([])}>Reset</h1>
       <div className="flex gap-5">
         {filters.map((filter) => (
-          <h2 key={nanoid()} onClick={() => handleRemove(filter)} className="text-green-500">
+          <h2
+            key={nanoid()}
+            onClick={() => handleRemove(filter)}
+            className="text-green-500"
+          >
             {filter}
           </h2>
         ))}
       </div>
       {filteredJobs.map((job) => {
         const skills = [job.role, job.level, ...job.languages, ...job.tools];
-
         return (
-          <div key={nanoid()} className="flex items-center gap-10">
-            <h2>{job.company}</h2>
-            <article className="flex gap-5">
-              {skills.map((skill) => (
-                <h3 key={nanoid()} onClick={() => handleAdd(skill)}>{skill}</h3>
-              ))}
-            </article>
-          </div>
+          <Job
+            skills={skills}
+            company={job.company}
+            logo={job.logo}
+            isNew={job.new}
+            isFeatured={job.featured}
+            position={job.position}
+            postedAt={job.postedAt}
+            location={job.location}
+            handleAdd={handleAdd}
+            key={job.id}
+          />
         );
       })}
     </main>
